@@ -1,7 +1,7 @@
 
 
 import {Injectable} from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Course} from "../model/course";
 import {Lesson} from "../model/lesson";
@@ -14,6 +14,11 @@ export class CoursesService {
 
     static readonly API_URL = 'https://angular-universal-course-94047.firebaseio.com';
 
+    public headers = new HttpHeaders({
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      });
+
     constructor(private http: HttpClient) {
 
     }
@@ -23,7 +28,7 @@ export class CoursesService {
     }
 
     findAllCourses(): Observable<Course[]> {
-        return this.http.get<Course[]>(`${CoursesService.API_URL}/courses.json`);
+        return this.http.get<Course[]>('http://localhost:9000/api/courses', {headers: this.headers});
     }
 
     findAllCourseLessons(courseId:string): Observable<Lesson[]> {
